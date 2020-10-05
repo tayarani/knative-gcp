@@ -1,0 +1,12 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: receiver
+spec:
+  template:
+    spec:
+      containers:
+      - image: ko://github.com/google/knative-gcp/test/test_images/receiver
+        env:
+        - name: FIRST_N_ERRS
+          value: "0"
