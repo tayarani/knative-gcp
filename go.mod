@@ -30,6 +30,7 @@ require (
 	k8s.io/client-go v11.0.1-0.20190805182717-6502b5e7b1b5+incompatible
 	knative.dev/eventing v0.17.1-0.20200929080328-74b9bed2ebf2
 	knative.dev/pkg v0.0.0-20200929052028-236c084e37a3
+	knative.dev/reconciler-test v0.0.0-20201001063329-8a22ebf8dbfc
 	knative.dev/serving v0.17.1-0.20200929093229-7960ee24cc7b
 	sigs.k8s.io/yaml v1.2.0
 )

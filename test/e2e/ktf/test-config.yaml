@@ -1,1 +1,2 @@
-
+myconfig:
+  jimmy: ../..//test_images/sender/pod.yaml
