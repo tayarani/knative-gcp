@@ -1,2 +1,5 @@
-myconfig:
-  jimmy: ../..//test_images/sender/pod.yaml
+components:
+  receiver:
+    yamlpath: ../../test_images/receiver/pod.yaml
+  sender:
+    yamlpath: ../../test_images/sender/pod.yaml

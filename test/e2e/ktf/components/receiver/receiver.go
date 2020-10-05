@@ -10,7 +10,6 @@ import (
 	"knative.dev/reconciler-test/pkg/manifest"
 )
 
-// Receiver
 type receiverComponent struct {
 }
 

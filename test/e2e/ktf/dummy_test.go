@@ -2,20 +2,19 @@ package ktfe2e
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"testing"
-	"time"
 
-	"knative.dev/reconciler-test/pkg/config"
+	"github.com/google/knative-gcp/test/e2e/ktf/components"
+	"github.com/google/knative-gcp/test/e2e/ktf/components/receiver"
+	"github.com/google/knative-gcp/test/e2e/ktf/components/sender"
+
 	"knative.dev/reconciler-test/pkg/framework"
-	"knative.dev/reconciler-test/pkg/manifest"
 )
 
 type Config struct {
 	framework.BaseConfig
 	BrokerName string `desc:"The name of the broker"`
-	Myconfig   MyComponentConfig
+	Components components.Config
 }
 
 var myconfig = Config{}
@@ -25,7 +24,8 @@ func TestMain(m *testing.M) {
 	framework.
 		NewSuite(m).
 		Configure(&myconfig).
-		Require(Component).
+		Require(receiver.Component).
+		Require(sender.Component).
 		Run()
 	fmt.Println(">>>>>>>>> 2")
 }
@@ -46,46 +46,9 @@ func TestCase(t *testing.T) {
 			//component := MyComponent{}
 			//fmt.Printf("%v", component)
 
-			time.Sleep(60 * time.Second)
+			//time.Sleep(60 * time.Second)
 
 			fmt.Println(">>>>>>>>> 5")
 
 		})
-}
-
-// ===========
-// MyComponent
-type MyComponent struct {
-}
-
-// MyComponentConfig
-type MyComponentConfig struct {
-	Jimmy string
-}
-
-var Component = &MyComponent{}
-var _ framework.Component = (*MyComponent)(nil)
-
-// Scope returns the component scope
-func (s *MyComponent) Scope() framework.ComponentScope {
-	fmt.Println("MyComponent::Scope")
-	return framework.ComponentScopeCluster
-}
-
-// Required
-func (s *MyComponent) Required(rc framework.ResourceContext, cfg config.Config) {
-	fmt.Println("MyComponent::Required")
-
-	fmt.Printf("MyComponentConfig: %+v\n", config.GetConfig(cfg, "myconfig"))
-	mycfg := config.GetConfig(cfg, "myconfig").(MyComponentConfig)
-
-	content, err := ioutil.ReadFile(mycfg.Jimmy)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	yaml := manifest.FromString(string(content))
-
-	//rc.Logf("installing GitHubSource release ", ghcfg.Version)
-	rc.Apply(yaml, mycfg)
 }
