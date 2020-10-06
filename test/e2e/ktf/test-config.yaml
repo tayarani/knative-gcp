@@ -1,5 +1,9 @@
 components:
   receiver:
-    yamlpath: ../../test_images/receiver/pod.yaml
+    yamlpath: components/receiver/pod.yaml
+    #yamlpath: ../../test_images/receiver/pod.yaml
   sender:
     yamlpath: ../../test_images/sender/pod.yaml
+  target:
+    podYaml: ../../test_images/target/pod.yaml
+    serviceYaml: components/target/service.yaml
