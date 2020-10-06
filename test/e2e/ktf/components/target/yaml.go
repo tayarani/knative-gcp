@@ -5,25 +5,28 @@ const (
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{.Name}}
+  name: target
   labels: 
-    app: {{.Name}}	
+    app: target
 spec:
   containers:
-    - name: {{.Name}}
-      image: {{.Image}}
+  - name: target
+    image: github.com/google/knative-gcp/test/test_images/target
+    env:
+    - name: TIME
+      value: "5m"
 `
 
 	serviceTemplate = `
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{.Name}}
+  name: target
 spec:
   ports:
   - port: 80
     protocol: TCP
   selector:
-    app: {{.Name}}
+    app: target
 `
 )
