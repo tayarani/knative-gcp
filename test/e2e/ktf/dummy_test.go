@@ -3,10 +3,9 @@ package ktfe2e
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/google/knative-gcp/test/e2e/ktf/components"
-	"github.com/google/knative-gcp/test/e2e/ktf/components/receiver"
-	"github.com/google/knative-gcp/test/e2e/ktf/components/sender"
 	"github.com/google/knative-gcp/test/e2e/ktf/components/target"
 
 	"knative.dev/reconciler-test/pkg/framework"
@@ -25,8 +24,8 @@ func TestMain(m *testing.M) {
 	framework.
 		NewSuite(m).
 		Configure(&myconfig).
-		Require(receiver.Component).
-		Require(sender.Component).
+		//Require(receiver.Component).
+		//Require(sender.Component).
 		Require(target.Component).
 		Run()
 	fmt.Println(">>>>>>>>> 2")
@@ -37,20 +36,13 @@ func TestCase(t *testing.T) {
 	framework.NewTest(t).
 		Feature("Named-Broker").
 		Stable().
-		//Must("Named-Broker").
 		Run(func(tc framework.TestContext) {
 			fmt.Println(">>>>>>>>> 4")
-			fmt.Println("broker name is: " + myconfig.BrokerName)
 
-			//ctx := context.Background()
-			//fmt.Println(ctx)
+			target.Deploy(tc)
 
-			//component := MyComponent{}
-			//fmt.Printf("%v", component)
-
-			//time.Sleep(60 * time.Second)
+			time.Sleep(60 * time.Second)
 
 			fmt.Println(">>>>>>>>> 5")
-
 		})
 }

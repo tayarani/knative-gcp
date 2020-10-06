@@ -1293,7 +1293,7 @@ knative.dev/pkg/webhook/resourcesemantics
 knative.dev/pkg/webhook/resourcesemantics/conversion
 knative.dev/pkg/webhook/resourcesemantics/defaulting
 knative.dev/pkg/webhook/resourcesemantics/validation
-# knative.dev/reconciler-test v0.0.0-20201001063329-8a22ebf8dbfc
+# knative.dev/reconciler-test v0.0.0-20201006162521-6f881edfd2f8
 ## explicit
 knative.dev/reconciler-test/pkg/config
 knative.dev/reconciler-test/pkg/framework
