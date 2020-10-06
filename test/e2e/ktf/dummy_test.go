@@ -7,6 +7,7 @@ import (
 	"github.com/google/knative-gcp/test/e2e/ktf/components"
 	"github.com/google/knative-gcp/test/e2e/ktf/components/receiver"
 	"github.com/google/knative-gcp/test/e2e/ktf/components/sender"
+	"github.com/google/knative-gcp/test/e2e/ktf/components/target"
 
 	"knative.dev/reconciler-test/pkg/framework"
 )
@@ -26,6 +27,7 @@ func TestMain(m *testing.M) {
 		Configure(&myconfig).
 		Require(receiver.Component).
 		Require(sender.Component).
+		Require(target.Component).
 		Run()
 	fmt.Println(">>>>>>>>> 2")
 }
