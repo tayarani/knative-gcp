@@ -2,13 +2,28 @@ package sender
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 
+	corev1 "k8s.io/api/core/v1"
 	"knative.dev/reconciler-test/pkg/config"
 	"knative.dev/reconciler-test/pkg/framework"
+	"knative.dev/reconciler-test/pkg/installer"
 	"knative.dev/reconciler-test/pkg/manifest"
 )
+
+const packageName = "github.com/google/knative-gcp/test/test_images/sender"
+
+// Deploy ...
+func Deploy(rc framework.ResourceContext) corev1.ObjectReference {
+	fmt.Println("senderComponent::Deploy")
+
+	rc.Apply(manifest.FromString(podTemplate))
+	rc.Apply(manifest.FromString(serviceTemplate))
+
+	return corev1.ObjectReference{
+		Namespace: rc.Namespace(),
+		Name:      "sender",
+	}
+}
 
 type senderComponent struct {
 }
@@ -19,20 +34,10 @@ var Component = &senderComponent{}
 var _ framework.Component = (*senderComponent)(nil)
 
 func (s *senderComponent) Scope() framework.ComponentScope {
-	return framework.ComponentScopeCluster
+	return framework.ComponentScopeResource
 }
 
 func (s *senderComponent) Required(rc framework.ResourceContext, cfg config.Config) {
 	fmt.Println("senderComponent::Required")
-
-	fmt.Printf("SenderComponentConfig: %+v\n", config.GetConfig(cfg, "components/sender"))
-	scfg := config.GetConfig(cfg, "components/sender").(Config)
-
-	content, err := ioutil.ReadFile(scfg.YamlPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	yaml := manifest.FromString(string(content))
-	rc.Apply(yaml, scfg)
+	installer.RegisterPackage(packageName)
 }

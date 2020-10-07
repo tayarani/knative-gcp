@@ -2,13 +2,28 @@ package receiver
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 
+	corev1 "k8s.io/api/core/v1"
 	"knative.dev/reconciler-test/pkg/config"
 	"knative.dev/reconciler-test/pkg/framework"
+	"knative.dev/reconciler-test/pkg/installer"
 	"knative.dev/reconciler-test/pkg/manifest"
 )
+
+const packageName = "github.com/google/knative-gcp/test/test_images/receiver"
+
+// Deploy ...
+func Deploy(rc framework.ResourceContext) corev1.ObjectReference {
+	fmt.Println("receiverComponent::Deploy")
+
+	rc.Apply(manifest.FromString(podTemplate))
+	rc.Apply(manifest.FromString(serviceTemplate))
+
+	return corev1.ObjectReference{
+		Namespace: rc.Namespace(),
+		Name:      "receiver",
+	}
+}
 
 type receiverComponent struct {
 }
@@ -19,20 +34,10 @@ var Component = &receiverComponent{}
 var _ framework.Component = (*receiverComponent)(nil)
 
 func (s *receiverComponent) Scope() framework.ComponentScope {
-	return framework.ComponentScopeCluster
+	return framework.ComponentScopeResource
 }
 
 func (s *receiverComponent) Required(rc framework.ResourceContext, cfg config.Config) {
 	fmt.Println("receiverComponent::Required")
-
-	fmt.Printf("ReceiverComponentConfig: %+v\n", config.GetConfig(cfg, "components/receiver"))
-	rcfg := config.GetConfig(cfg, "components/receiver").(Config)
-
-	content, err := ioutil.ReadFile(rcfg.YamlPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	yaml := manifest.FromString(string(content))
-	rc.Apply(yaml, rcfg)
+	installer.RegisterPackage(packageName)
 }
